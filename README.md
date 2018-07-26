@@ -1,4 +1,8 @@
-# 1、爬包app代码如下（以中国中央气象台天气预报数据为例）
+# 1、爬虫结果的图表化数据分析
+- 利用百度 echarts.js
+![image](https://github.com/xingZM-p/pachong_app/blob/master/template.PNG)
+
+# 2、爬包app代码如下（以中国中央气象台天气预报数据为例）
 - 需要用到request、cheerio库
 ```
 //必须使用双引号
@@ -113,6 +117,4 @@ _main()
 
 ```
 
-# 2、爬虫结果的图表化数据分析
-- 利用百度 echarts.js
-![image]()
+
