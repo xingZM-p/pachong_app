@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+var data = [
+    {
+      "name": "北京",
+      "value": 34
+    },
+    {
+      "name": "天津",
+      "value": 33
+    },
+    {
+      "name": "石家庄",
+      "value": 34
+    },
+    {
+      "name": "太原",
+      "value": 31
+    },
+    {
+      "name": "呼和浩特",
+      "value": 28
+    },
+    {
+      "name": "沈阳",
+      "value": 28
+    },
+    {
+      "name": "长春",
+      "value": 27
+    },
+    {
+      "name": "哈尔滨",
+      "value": 27
+    },
+    {
+      "name": "上海",
+      "value": 36
+    },
+    {
+      "name": "南京",
+      "value": 36
+    },
+    {
+      "name": "杭州",
+      "value": 38
+    },
+    {
+      "name": "合肥",
+      "value": 37
+    },
+    {
+      "name": "福州",
+      "value": 35
+    },
+    {
+      "name": "南昌",
+      "value": 37
+    },
+    {
+      "name": "济南",
+      "value": 34
+    },
+    {
+      "name": "郑州",
+      "value": 34
+    },
+    {
+      "name": "武汉",
+      "value": 37
+    },
+    {
+      "name": "长沙",
+      "value": 37
+    },
+    {
+      "name": "广州",
+      "value": 33
+    },
+    {
+      "name": "深圳",
+      "value": 31
+    },
+    {
+      "name": "南宁",
+      "value": 32
+    },
+    {
+      "name": "海口",
+      "value": 34
+    },
+    {
+      "name": "重庆",
+      "value": 38
+    },
+    {
+      "name": "成都",
+      "value": 33
+    },
+    {
+      "name": "贵阳",
+      "value": 28
+    },
+    {
+      "name": "昆明",
+      "value": 24
+    },
+    {
+      "name": "拉萨",
+      "value": 24
+    },
+    {
+      "name": "西安",
+      "value": 37
+    },
+    {
+      "name": "兰州",
+      "value": 34
+    },
+    {
+      "name": "西宁",
+      "value": 30
+    },
+    {
+      "name": "银川",
+      "value": 33
+    },
+    {
+      "name": "乌鲁木齐",
+      "value": 23
+    },
+    {
+      "name": "香港",
+      "value": 31
+    },
+    {
+      "name": "澳门",
+      "value": 31
+    },
+    {
+      "name": "台北",
+      "value": 34
+    }
+];
+var geoCoordMap = {
+    '北京':[116.4136103013,39.9110666857],
+    '天津':[117.2059037622,39.0908458050],
+    '石家庄':[114.5207820418,38.0488378098],
+    '太原':[112.5570506441,37.8768254075],
+    '呼和浩特':[111.7584796016,40.8475472021],
+    '沈阳':[123.4695980294,41.6833188772],
+    '长春':[125.3301296792,43.8219013261],
+    '哈尔滨':[126.5424184340,45.8077839548],
+    '上海':[121.4803295328,31.2363429624],
+    '南京':[118.8029140176,32.0647517242],
+    '杭州':[120.1617445782,30.2799186759],
+    '合肥':[117.2354599503,31.8268353637],
+    '福州':[119.3029645974,26.0803098900],
+    '南昌':[115.8645218847,28.6876884562],
+    '济南':[116.7584101167,36.5598443152],
+    '郑州':[113.6313915479,34.7533581487],
+    '武汉':[114.3118287971,30.5984342798],
+    '长沙':[112.9453203518,28.2340227593],
+    '广州':[113.2708136740,23.1351666766],
+    '深圳':[114.0661345267,22.5485544122],
+    '南宁':[108.3733749001,22.8229869980],
+    '海口':[110.2064297546,20.0499987102],
+    '重庆':[106.5571393991,29.5710002003],
+    '成都':[104.0712219292,30.5763307666],
+    '贵阳':[106.6367843613,26.6527625307],
+    '昆明':[102.8396611228,24.8859360126],
+    '拉萨':[91.1209613886,29.6500915169],
+    '西安':[108.9462765501,34.3474989219],
+    '兰州':[103.8406667911,36.0673285116],
+    '西宁':[101.7842807477,36.6234130201],
+    '银川':[106.2389748034,38.4923527292],
+    '乌鲁木齐':[87.6233162377,43.8327112073],
+    '香港':[114.1720064282,22.2810079531],
+    '澳门':[113.5556075793,22.2048369936],
+    '台北':[121.5200760000,25.0307240000]
+};
+
+var convertData = function (data) {
+    var res = [];
+    for (var i = 0; i < data.length; i++) {
+        var geoCoord = geoCoordMap[data[i].name];
+        if (geoCoord) {
+            res.push({
+                name: data[i].name,
+                value: geoCoord.concat(data[i].value)
+            });
+        }
+    }
+    return res;
+};
+
+option = {
+    title: {
+        text: '全国主要城市气温',
+        subtext: 'data from 中央气象台',
+        sublink: 'http://www.nmc.cn/',
+        left: 'center'
+    },
+    tooltip : {
+        trigger: 'item'
+    },
+    bmap: {
+        center: [104.114129, 37.550339],
+        zoom: 5,
+        roam: true,
+        mapStyle: {
+            styleJson: [{
+                'featureType': 'water',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#d1d1d1'
+                }
+            }, {
+                'featureType': 'land',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#f3f3f3'
+                }
+            }, {
+                'featureType': 'railway',
+                'elementType': 'all',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'highway',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#fdfdfd'
+                }
+            }, {
+                'featureType': 'highway',
+                'elementType': 'labels',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'arterial',
+                'elementType': 'geometry',
+                'stylers': {
+                    'color': '#fefefe'
+                }
+            }, {
+                'featureType': 'arterial',
+                'elementType': 'geometry.fill',
+                'stylers': {
+                    'color': '#fefefe'
+                }
+            }, {
+                'featureType': 'poi',
+                'elementType': 'all',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'green',
+                'elementType': 'all',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'subway',
+                'elementType': 'all',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'manmade',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#d1d1d1'
+                }
+            }, {
+                'featureType': 'local',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#d1d1d1'
+                }
+            }, {
+                'featureType': 'arterial',
+                'elementType': 'labels',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'boundary',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#fefefe'
+                }
+            }, {
+                'featureType': 'building',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#d1d1d1'
+                }
+            }, {
+                'featureType': 'label',
+                'elementType': 'labels.text.fill',
+                'stylers': {
+                    'color': '#999999'
+                }
+            }]
+        }
+    },
+    series : [
+        {
+            name: '气温 / ℃',
+            type: 'scatter',
+            coordinateSystem: 'bmap',
+            data: convertData(data),
+            symbolSize: function (val) {
+                return val[2] / 2;
+            },
+            label: {
+                normal: {
+                    formatter: '{b}',
+                    position: 'right',
+                    show: false
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: 'purple'
+                }
+            }
+        },
+        {
+            name: 'Top 5',
+            type: 'effectScatter',
+            coordinateSystem: 'bmap',
+            data: convertData(data.sort(function (a, b) {
+                return b.value - a.value;
+            }).slice(0, 6)),
+            symbolSize: function (val) {
+                return val[2];
+            },
+            showEffectOn: 'render',
+            rippleEffect: {
+                brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            label: {
+                normal: {
+                    formatter: '{b}',
+                    position: 'right',
+                    show: true
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: 'purple',
+                    shadowBlur: 10,
+                    shadowColor: '#333'
+                }
+            },
+            zlevel: 1
+        }
+    ]
+};;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>
